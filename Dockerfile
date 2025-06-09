@@ -21,4 +21,6 @@ COPY --chmod=644 ./ssh/sshd_config /etc/ssh/
 
 COPY ./ssh/ssh-server /etc/s6-overlay/s6-rc.d/ssh-server
 
+COPY ./ssh/contents.d/ssh-server /etc/s6-overlay/s6-rc.d/user/contents.d/ssh-server
+
 USER www-data
