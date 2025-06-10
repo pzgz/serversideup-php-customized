@@ -23,4 +23,13 @@ COPY ./ssh/ssh-server /etc/s6-overlay/s6-rc.d/ssh-server
 
 COPY ./ssh/contents.d/ssh-server /etc/s6-overlay/s6-rc.d/user/contents.d/ssh-server
 
+# Install git and dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    ca-certificates \
+    curl \
+    openssh-client \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 USER www-data
