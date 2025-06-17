@@ -1,2 +1,2 @@
 #!/command/execlineb -P
-s6-setuidgid root fail2ban-server -f
+s6-setsid -q -- /bin/sh -c "echo Docker! | su -c 'fail2ban-server -f'"
