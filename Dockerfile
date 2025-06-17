@@ -8,20 +8,13 @@ USER root
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends dialog \
-    && apt-get install -y --no-install-recommends openssh-server \
+    && apt-get install -y --no-install-recommends openssh-server rsyslog fail2ban \
     && echo "root:Docker!" | chpasswd \
     && ssh-keygen -A \
     && chmod 600 /etc/ssh/ssh_host_*_key \
     && chmod 644 /etc/ssh/ssh_host_*_key.pub \
-    && chown root:root /etc/ssh/ssh_host_*_key
-
-RUN mkdir -p /var/run/sshd
-
-COPY --chmod=644 ./ssh/sshd_config /etc/ssh/
-
-COPY ./ssh/ssh-server /etc/s6-overlay/s6-rc.d/ssh-server
-
-COPY ./ssh/contents.d/ssh-server /etc/s6-overlay/s6-rc.d/user/contents.d/ssh-server
+    && chown root:root /etc/ssh/ssh_host_*_key \
+    && sed -i '/^module(load="imklog")/a module(load="imuxsock")' /etc/rsyslog.conf
 
 # Install git and dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -45,5 +38,34 @@ SHELL ["/bin/bash", "-c"]
 RUN npm install -g --force pnpm@latest-10 \
     && SHELL=bash pnpm setup \
     && source /root/.bashrc
-    
+
+RUN echo "[sshd]\n\
+enabled = true\n\
+port = ssh\n\
+logpath = /var/log/auth.log\n\
+backend = systemd\n\
+maxretry = 5\n\
+findtime = 600\n\
+bantime = 3600" > /etc/fail2ban/jail.d/sshd.conf    
+
+# sshd server
+RUN mkdir -p /var/run/sshd
+COPY --chmod=644 ./ssh/sshd_config /etc/ssh/
+COPY ./ssh/ssh-server /etc/s6-overlay/s6-rc.d/ssh-server
+COPY ./ssh/contents.d/ssh-server /etc/s6-overlay/s6-rc.d/user/contents.d/ssh-server
+RUN chmod +x /etc/s6-overlay/s6-rc.d/ssh-server/run
+
+# fail2ban
+COPY ./fail2ban/fail2ban /etc/s6-overlay/s6-rc.d/fail2ban
+COPY ./fail2ban/contents.d/fail2ban /etc/s6-overlay/s6-rc.d/user/contents.d/fail2ban
+RUN chmod +x /etc/s6-overlay/s6-rc.d/fail2ban/run
+
+# rsyslog
+COPY ./rsyslog/rsyslog /etc/s6-overlay/s6-rc.d/rsyslog
+COPY ./rsyslog/contents.d/rsyslog /etc/s6-overlay/s6-rc.d/user/contents.d/rsyslog
+RUN chmod +x /etc/s6-overlay/s6-rc.d/rsyslog/run
+
+# set root password to empty
+RUN passwd -d root
+
 USER www-data
