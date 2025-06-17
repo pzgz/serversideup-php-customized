@@ -13,8 +13,7 @@ RUN apt-get update \
     && ssh-keygen -A \
     && chmod 600 /etc/ssh/ssh_host_*_key \
     && chmod 644 /etc/ssh/ssh_host_*_key.pub \
-    && chown root:root /etc/ssh/ssh_host_*_key \
-    && sed -i '/^module(load="imklog")/a module(load="imuxsock")' /etc/rsyslog.conf
+    && chown root:root /etc/ssh/ssh_host_*_key
 
 # Install git and dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
