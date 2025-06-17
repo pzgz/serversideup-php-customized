@@ -54,15 +54,19 @@ COPY ./ssh/ssh-server /etc/s6-overlay/s6-rc.d/ssh-server
 COPY ./ssh/contents.d/ssh-server /etc/s6-overlay/s6-rc.d/user/contents.d/ssh-server
 RUN chmod +x /etc/s6-overlay/s6-rc.d/ssh-server/run
 
+# rsyslog
+COPY ./rsyslog/rsyslog /etc/s6-overlay/s6-rc.d/rsyslog
+COPY ./rsyslog/contents.d/rsyslog /etc/s6-overlay/s6-rc.d/user/contents.d/rsyslog
+RUN mkdir -p /var/run/rsyslog
+RUN chmod +x /etc/s6-overlay/s6-rc.d/rsyslog/run
+RUN echo "module(load=\"imuxsock\" SysSock.Name=\"/var/run/rsyslog/dev-log\")\n\
+*.* /var/log/syslog\n\
+auth,authpriv.* /var/log/auth.log" > /etc/rsyslog.conf
+
 # fail2ban
 COPY ./fail2ban/fail2ban /etc/s6-overlay/s6-rc.d/fail2ban
 COPY ./fail2ban/contents.d/fail2ban /etc/s6-overlay/s6-rc.d/user/contents.d/fail2ban
 RUN chmod +x /etc/s6-overlay/s6-rc.d/fail2ban/run
-
-# rsyslog
-COPY ./rsyslog/rsyslog /etc/s6-overlay/s6-rc.d/rsyslog
-COPY ./rsyslog/contents.d/rsyslog /etc/s6-overlay/s6-rc.d/user/contents.d/rsyslog
-RUN chmod +x /etc/s6-overlay/s6-rc.d/rsyslog/run
 
 # set root password to empty
 RUN passwd -d root
