@@ -59,9 +59,7 @@ COPY ./rsyslog/rsyslog /etc/s6-overlay/s6-rc.d/rsyslog
 COPY ./rsyslog/contents.d/rsyslog /etc/s6-overlay/s6-rc.d/user/contents.d/rsyslog
 RUN mkdir -p /var/run/rsyslog
 RUN chmod +x /etc/s6-overlay/s6-rc.d/rsyslog/run
-RUN echo "module(load=\"imuxsock\" SysSock.Name=\"/var/run/rsyslog/dev-log\")\n\
-*.* /var/log/syslog\n\
-auth,authpriv.* /var/log/auth.log" > /etc/rsyslog.conf
+COPY ./rsyslog.conf /etc/rsyslog.conf
 
 # fail2ban
 COPY ./fail2ban/fail2ban /etc/s6-overlay/s6-rc.d/fail2ban
