@@ -47,12 +47,13 @@ COPY ./s6-rc.d/sshd-log-prepare /etc/s6-overlay/s6-rc.d/
 RUN chmod +x /etc/s6-overlay/s6-rc.d/sshd/run
 RUN chmod +x /etc/s6-overlay/s6-rc.d/sshd-log/run
 RUN chmod +x /etc/s6-overlay/s6-rc.d/sshd-log-prepare/up
-COPY ./user/contents.d/sshd-pipeline /etc/s6-overlay/s6-rc.d/user/contents.d/sshd-pipeline
+COPY ./s6-rc.d/user/contents.d/sshd-pipeline /etc/s6-overlay/s6-rc.d/user/contents.d/sshd-pipeline
 
 # fail2ban
 COPY ./s6-rc.d/fail2ban /etc/s6-overlay/s6-rc.d/
 RUN chmod +x /etc/s6-overlay/s6-rc.d/fail2ban/run
 COPY ./configs/fail2ban-jail.d-sshd.conf /etc/fail2ban/jail.d/sshd.conf
+COPY ./s6-rc.d/user/contents.d/fail2ban /etc/s6-overlay/s6-rc.d/user/contents.d/fail2ban
 
 # set root password to empty
 RUN passwd -d root
