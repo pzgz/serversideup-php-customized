@@ -46,10 +46,8 @@ RUN mkdir -p /var/run/sshd
 COPY --chmod=644 ./configs/sshd_config /etc/ssh/
 COPY ./s6-rc.d/sshd /etc/s6-overlay/s6-rc.d/sshd
 COPY ./s6-rc.d/sshd-log /etc/s6-overlay/s6-rc.d/sshd-log
-COPY ./s6-rc.d/sshd-log-prepare /etc/s6-overlay/s6-rc.d/sshd-log-prepare
 RUN chmod +x /etc/s6-overlay/s6-rc.d/sshd/run
 RUN chmod +x /etc/s6-overlay/s6-rc.d/sshd-log/run
-RUN chmod +x /etc/s6-overlay/s6-rc.d/sshd-log-prepare/up
 COPY ./s6-rc.d/user/contents.d/sshd-pipeline /etc/s6-overlay/s6-rc.d/user/contents.d/sshd-pipeline
 
 # fail2ban
