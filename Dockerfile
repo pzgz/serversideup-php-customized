@@ -38,31 +38,21 @@ RUN npm install -g --force pnpm@latest-10 \
     && SHELL=bash pnpm setup \
     && source /root/.bashrc
 
-RUN echo "[sshd]\n\
-enabled = true\n\
-port = ssh\n\
-filter = sshd\n\
-logpath = /var/log/sshd/current\n\
-backend = auto\n\
-maxretry = 5\n\
-findtime = 600\n\
-bantime = -1" > /etc/fail2ban/jail.d/sshd.conf    
-
 # sshd server
+COPY --chmod=644 ./configs/sshd_config /etc/ssh/
 RUN mkdir -p /var/run/sshd
-RUN mkdir -p /var/log/sshd
-RUN chown nobody:nogroup /var/log/sshd
-RUN chmod 02755 /var/log/sshd
-COPY --chmod=644 ./ssh/sshd_config /etc/ssh/
-COPY ./ssh/ssh-server /etc/s6-overlay/s6-rc.d/ssh-server
-COPY ./ssh/contents.d/ssh-server /etc/s6-overlay/s6-rc.d/user/contents.d/ssh-server
-RUN chmod +x /etc/s6-overlay/s6-rc.d/ssh-server/run
-RUN chmod +x /etc/s6-overlay/s6-rc.d/ssh-server/log/run
+COPY ./s6-rc.d/sshd /etc/s6-overlay/s6-rc.d/
+COPY ./s6-rc.d/sshd-log /etc/s6-overlay/s6-rc.d/
+COPY ./s6-rc.d/sshd-log-prepare /etc/s6-overlay/s6-rc.d/
+RUN chmod +x /etc/s6-overlay/s6-rc.d/sshd/run
+RUN chmod +x /etc/s6-overlay/s6-rc.d/sshd-log/run
+RUN chmod +x /etc/s6-overlay/s6-rc.d/sshd-log-prepare/up
+COPY ./user/contents.d/sshd-pipeline /etc/s6-overlay/s6-rc.d/user/contents.d/sshd-pipeline
 
 # fail2ban
-COPY ./fail2ban/fail2ban /etc/s6-overlay/s6-rc.d/fail2ban
-COPY ./fail2ban/contents.d/fail2ban /etc/s6-overlay/s6-rc.d/user/contents.d/fail2ban
+COPY ./s6-rc.d/fail2ban /etc/s6-overlay/s6-rc.d/
 RUN chmod +x /etc/s6-overlay/s6-rc.d/fail2ban/run
+COPY ./configs/fail2ban-jail.d-sshd.conf /etc/fail2ban/jail.d/sshd.conf
 
 # set root password to empty
 RUN passwd -d root
