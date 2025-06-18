@@ -1,2 +1,2 @@
 #!/command/execlineb -P
-exec logutil-service -tt /var/log/sshd
+exec logutil-service /var/log/sshd

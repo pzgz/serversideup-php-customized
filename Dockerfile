@@ -51,8 +51,8 @@ bantime = -1" > /etc/fail2ban/jail.d/sshd.conf
 # sshd server
 RUN mkdir -p /var/run/sshd
 RUN mkdir -p /var/log/sshd
-RUN chown root:root /var/log/sshd
-RUN chmod 755 /var/log/sshd
+RUN chown nobody:nogroup /var/log/sshd
+RUN chmod 02755 /var/log/sshd
 COPY --chmod=644 ./ssh/sshd_config /etc/ssh/
 COPY ./ssh/ssh-server /etc/s6-overlay/s6-rc.d/ssh-server
 COPY ./ssh/contents.d/ssh-server /etc/s6-overlay/s6-rc.d/user/contents.d/ssh-server
