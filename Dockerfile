@@ -39,8 +39,11 @@ RUN npm install -g --force pnpm@latest-10 \
     && source /root/.bashrc
 
 # sshd server
-COPY --chmod=644 ./configs/sshd_config /etc/ssh/
+RUN mkdir -p /var/log/sshd
+RUN chown nobody:nogroup /var/log/sshd
+RUN chmod 02755 /var/log/sshd
 RUN mkdir -p /var/run/sshd
+COPY --chmod=644 ./configs/sshd_config /etc/ssh/
 COPY ./s6-rc.d/sshd /etc/s6-overlay/s6-rc.d/sshd
 COPY ./s6-rc.d/sshd-log /etc/s6-overlay/s6-rc.d/sshd-log
 COPY ./s6-rc.d/sshd-log-prepare /etc/s6-overlay/s6-rc.d/sshd-log-prepare
