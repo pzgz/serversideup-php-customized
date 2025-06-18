@@ -1,2 +1,0 @@
-#!/command/execlineb -P
-s6-setsid -q -- /bin/sh -c "echo Docker! | su -c 'rsyslogd -n -iNONE'"

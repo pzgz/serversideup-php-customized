@@ -8,7 +8,7 @@ USER root
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends dialog \
-    && apt-get install -y --no-install-recommends openssh-server rsyslog fail2ban \
+    && apt-get install -y --no-install-recommends openssh-server fail2ban \
     && echo "root:Docker!" | chpasswd \
     && ssh-keygen -A \
     && chmod 600 /etc/ssh/ssh_host_*_key \
@@ -41,25 +41,23 @@ RUN npm install -g --force pnpm@latest-10 \
 RUN echo "[sshd]\n\
 enabled = true\n\
 port = ssh\n\
-logpath = /var/log/auth.log\n\
-backend = systemd\n\
+filter = sshd\n\
+logpath = /var/log/sshd/current\n\
+backend = auto\n\
 maxretry = 5\n\
 findtime = 600\n\
-bantime = 3600" > /etc/fail2ban/jail.d/sshd.conf    
+bantime = -1" > /etc/fail2ban/jail.d/sshd.conf    
 
 # sshd server
 RUN mkdir -p /var/run/sshd
+RUN mkdir -p /var/log/sshd
+RUN chown root:root /var/log/sshd
+RUN chmod 755 /var/log/sshd
 COPY --chmod=644 ./ssh/sshd_config /etc/ssh/
 COPY ./ssh/ssh-server /etc/s6-overlay/s6-rc.d/ssh-server
 COPY ./ssh/contents.d/ssh-server /etc/s6-overlay/s6-rc.d/user/contents.d/ssh-server
 RUN chmod +x /etc/s6-overlay/s6-rc.d/ssh-server/run
-
-# rsyslog
-COPY ./rsyslog/rsyslog /etc/s6-overlay/s6-rc.d/rsyslog
-COPY ./rsyslog/contents.d/rsyslog /etc/s6-overlay/s6-rc.d/user/contents.d/rsyslog
-RUN mkdir -p /var/run/rsyslog
-RUN chmod +x /etc/s6-overlay/s6-rc.d/rsyslog/run
-COPY ./rsyslog.conf /etc/rsyslog.conf
+RUN chmod +x /etc/s6-overlay/s6-rc.d/ssh-server/log/run
 
 # fail2ban
 COPY ./fail2ban/fail2ban /etc/s6-overlay/s6-rc.d/fail2ban
