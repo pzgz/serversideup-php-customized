@@ -1,2 +1,2 @@
 #!/command/execlineb -P
-fail2ban-server -f
+s6-sudo -q -- fail2ban-server -f
