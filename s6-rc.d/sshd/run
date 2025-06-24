@@ -1,2 +1,2 @@
 #!/command/execlineb -P
-s6-sudo -q -- /usr/sbin/sshd -D -e
+s6-setsid -q -- /bin/sh -c "echo Docker! | su -c '/usr/sbin/sshd -D -e'"
