@@ -9,12 +9,7 @@ USER root
 RUN apt-get update \
     && apt-get install -y --no-install-recommends dialog \
     && apt-get install -y --no-install-recommends dropbear-bin fail2ban \
-    && echo "root:Docker!" | chpasswd \
-    && dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key \
-    && dropbearkey -t dss -f /etc/dropbear/dropbear_dss_host_key \
-    && dropbearkey -t ecdsa -f /etc/dropbear/dropbear_ecdsa_host_key \
-    && dropbearkey -t ed25519 -f /etc/dropbear/dropbear_ed25519_host_key \
-    && chmod 600 /etc/dropbear/dropbear_*_host_key
+    && echo "root:Docker!" | chpasswd
 
 # Install git and dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -44,6 +39,11 @@ RUN mkdir -p /var/log/dropbear
 RUN chown nobody:nogroup /var/log/dropbear
 RUN chmod 02755 /var/log/dropbear
 RUN mkdir -p /etc/dropbear
+RUN dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key \
+    && dropbearkey -t dss -f /etc/dropbear/dropbear_dss_host_key \
+    && dropbearkey -t ecdsa -f /etc/dropbear/dropbear_ecdsa_host_key \
+    && dropbearkey -t ed25519 -f /etc/dropbear/dropbear_ed25519_host_key \
+    && chmod 600 /etc/dropbear/dropbear_*_host_key
 COPY ./s6-rc.d/dropbear /etc/s6-overlay/s6-rc.d/dropbear
 COPY ./s6-rc.d/dropbear-log /etc/s6-overlay/s6-rc.d/dropbear-log
 RUN chmod +x /etc/s6-overlay/s6-rc.d/dropbear/run
