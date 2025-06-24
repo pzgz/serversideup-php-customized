@@ -36,7 +36,7 @@ RUN npm install -g --force pnpm@latest-10 \
 
 # dropbear server
 RUN mkdir -p /var/log/dropbear
-RUN chown nobody:nogroup /var/log/dropbear
+RUN chown www-data:www-data /var/log/dropbear
 RUN chmod 02755 /var/log/dropbear
 RUN mkdir -p /etc/dropbear
 RUN dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key \
