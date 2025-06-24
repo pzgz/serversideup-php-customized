@@ -1,2 +1,3 @@
-#!/command/execlineb -P
-s6-setsid -q -- /bin/sh -c "echo Docker! | su -c 'fail2ban-server -f'"
+#!/command/execlineb -S1
+rm -f /var/run/fail2ban/fail2ban.sock
+exec /usr/bin/fail2ban-server -f
