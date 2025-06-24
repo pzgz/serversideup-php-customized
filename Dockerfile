@@ -8,7 +8,7 @@ USER root
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends dialog \
-    && apt-get install -y --no-install-recommends dropbear-bin fail2ban \
+    && apt-get install -y --no-install-recommends dropbear-bin \
     && echo "root:Docker!" | chpasswd
 
 # Install git and dependencies
@@ -51,13 +51,13 @@ RUN chmod +x /etc/s6-overlay/s6-rc.d/dropbear-log/run
 COPY ./s6-rc.d/user/contents.d/dropbear-pipeline /etc/s6-overlay/s6-rc.d/user/contents.d/dropbear-pipeline
 
 # fail2ban
-COPY ./s6-rc.d/fail2ban /etc/s6-overlay/s6-rc.d/fail2ban
-RUN chmod +x /etc/s6-overlay/s6-rc.d/fail2ban/run
-COPY ./configs/fail2ban.local /etc/fail2ban/fail2ban.local
-COPY ./configs/fail2ban-jail.d-dropbear.conf /etc/fail2ban/jail.d/dropbear.conf
-COPY ./s6-rc.d/user/contents.d/fail2ban /etc/s6-overlay/s6-rc.d/user/contents.d/fail2ban
+# COPY ./s6-rc.d/fail2ban /etc/s6-overlay/s6-rc.d/fail2ban
+# RUN chmod +x /etc/s6-overlay/s6-rc.d/fail2ban/run
+# COPY ./configs/fail2ban.local /etc/fail2ban/fail2ban.local
+# COPY ./configs/fail2ban-jail.d-dropbear.conf /etc/fail2ban/jail.d/dropbear.conf
+# COPY ./s6-rc.d/user/contents.d/fail2ban /etc/s6-overlay/s6-rc.d/user/contents.d/fail2ban
 
 # set root password to empty
 RUN passwd -d root
 
-# USER www-data
+USER www-data
