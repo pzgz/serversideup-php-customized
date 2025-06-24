@@ -43,6 +43,7 @@ RUN dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key \
     && dropbearkey -t dss -f /etc/dropbear/dropbear_dss_host_key \
     && dropbearkey -t ecdsa -f /etc/dropbear/dropbear_ecdsa_host_key \
     && dropbearkey -t ed25519 -f /etc/dropbear/dropbear_ed25519_host_key \
+    && chown www-data:www-data /etc/dropbear/dropbear_*_host_key \
     && chmod 600 /etc/dropbear/dropbear_*_host_key
 COPY ./s6-rc.d/dropbear /etc/s6-overlay/s6-rc.d/dropbear
 COPY ./s6-rc.d/dropbear-log /etc/s6-overlay/s6-rc.d/dropbear-log

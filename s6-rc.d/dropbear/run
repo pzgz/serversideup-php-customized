@@ -1,2 +1,2 @@
 #!/command/execlineb -P
-/usr/sbin/dropbear -F -E -p 22 -P /var/run/dropbear.pid
+/usr/sbin/dropbear -F -E -p 10022 -P /var/run/dropbear.pid
