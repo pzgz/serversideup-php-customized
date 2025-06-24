@@ -10,6 +10,13 @@
 - 移除：`openssh-server`
 - 添加：`dropbear-bin`
 
+### 1.1 主机密钥生成
+- 使用 `dropbearkey` 生成以下主机密钥：
+  - RSA: `/etc/dropbear/dropbear_rsa_host_key`
+  - DSS: `/etc/dropbear/dropbear_dss_host_key` 
+  - ECDSA: `/etc/dropbear/dropbear_ecdsa_host_key`
+  - Ed25519: `/etc/dropbear/dropbear_ed25519_host_key`
+
 ### 2. 服务配置
 - **端口**: 22 (保持不变)
 - **启动方式**: Dropbear以前台模式运行 (`-F`)
@@ -75,6 +82,15 @@ ssh root@container_ip
 3. **检查端口监听**
    ```bash
    netstat -tlnp | grep :22
+   ```
+
+4. **主机密钥问题**
+   如果看到"No hostkeys available"错误，需要重新生成主机密钥：
+   ```bash
+   dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key
+   dropbearkey -t ecdsa -f /etc/dropbear/dropbear_ecdsa_host_key
+   dropbearkey -t ed25519 -f /etc/dropbear/dropbear_ed25519_host_key
+   chmod 600 /etc/dropbear/dropbear_*_host_key
    ```
 
 ## 迁移注意事项

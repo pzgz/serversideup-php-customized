@@ -9,7 +9,12 @@ USER root
 RUN apt-get update \
     && apt-get install -y --no-install-recommends dialog \
     && apt-get install -y --no-install-recommends dropbear-bin fail2ban \
-    && echo "root:Docker!" | chpasswd
+    && echo "root:Docker!" | chpasswd \
+    && dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key \
+    && dropbearkey -t dss -f /etc/dropbear/dropbear_dss_host_key \
+    && dropbearkey -t ecdsa -f /etc/dropbear/dropbear_ecdsa_host_key \
+    && dropbearkey -t ed25519 -f /etc/dropbear/dropbear_ed25519_host_key \
+    && chmod 600 /etc/dropbear/dropbear_*_host_key
 
 # Install git and dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
