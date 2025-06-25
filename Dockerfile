@@ -7,6 +7,8 @@ USER root
 # RUN install-php-extensions bcmath gd
 
 RUN mkdir -p /etc/apt/keyrings \
+    && apt-get update \
+    && apt-get install -y gnupg ca-certificates curl \
     && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
     && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get update \
@@ -14,10 +16,7 @@ RUN mkdir -p /etc/apt/keyrings \
         openssh-server \
         fail2ban \
         git \
-        ca-certificates \
-        curl \
         openssh-client \
-        gnupg \
         nodejs \
     && ssh-keygen -A \
     && chmod 600 /etc/ssh/ssh_host_*_key \
