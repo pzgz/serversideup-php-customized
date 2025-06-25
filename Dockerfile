@@ -61,4 +61,7 @@ COPY ./s6-rc.d/user/contents.d/dropbear-pipeline /etc/s6-overlay/s6-rc.d/user/co
 # set root password to empty
 RUN passwd -d root
 
-USER www-data
+# Need to add www-data user since we will run docker container as root by default
+RUN addgroup -g 33 www-data && adduser -D -u 33 -G www-data www-data
+
+# USER www-data

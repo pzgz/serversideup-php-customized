@@ -1,2 +1,3 @@
 #!/command/execlineb -P
-/usr/sbin/dropbear -F -E -p 10022 -P /var/run/dropbear.pid
+fdmove -c 2 1
+/usr/sbin/dropbear -s -F -E -p 10022 -P /var/run/dropbear.pid
