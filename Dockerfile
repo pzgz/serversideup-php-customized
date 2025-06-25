@@ -62,7 +62,6 @@ COPY ./s6-rc.d/user/contents.d/dropbear-pipeline /etc/s6-overlay/s6-rc.d/user/co
 RUN passwd -d root
 
 # Need to add www-data user since we will run docker container as root by default
-RUN groupadd -g 33 www-data && \
-    useradd -u 33 -g www-data --no-create-home --shell /usr/sbin/nologin www-data
+COPY zzz-custom-php.ini /usr/local/etc/php/conf.d/
 
 # USER www-data
