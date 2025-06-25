@@ -60,7 +60,11 @@ COPY ./s6-rc.d/user/contents.d/fail2ban /etc/s6-overlay/s6-rc.d/user/contents.d/
 RUN passwd -d root
 
 # Need to add www-data user since we will run docker container as root by default
-RUN echo "user = www-data" >> /usr/local/etc/php-fpm.d/docker-php-serversideup-pool.conf && \
+
+
+RUN echo "" >> /usr/local/etc/php-fpm.d/docker-php-serversideup-pool.conf && \
+    echo "; User and group to run php-fpm as" >> /usr/local/etc/php-fpm.d/docker-php-serversideup-pool.conf && \
+    echo "user = www-data" >> /usr/local/etc/php-fpm.d/docker-php-serversideup-pool.conf && \
     echo "group = www-data" >> /usr/local/etc/php-fpm.d/docker-php-serversideup-pool.conf
 
 # USER www-data
