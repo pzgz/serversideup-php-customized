@@ -1,0 +1,15 @@
+Port 10022
+ListenAddress 0.0.0.0
+LoginGraceTime 180
+StrictModes yes
+PermitRootLogin prohibit-password
+PasswordAuthentication no
+PermitEmptyPasswords no
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+Subsystem sftp internal-sftp
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com
+MACs hmac-sha2-512,hmac-sha2-256
+SyslogFacility AUTH
+LogLevel VERBOSE
+X11Forwarding no
