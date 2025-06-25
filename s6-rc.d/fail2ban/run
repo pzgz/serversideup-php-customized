@@ -1,3 +1,2 @@
 #!/command/execlineb -S1
-rm -f /var/run/fail2ban/fail2ban.sock
-exec /usr/bin/fail2ban-server -f
+/usr/bin/fail2ban-client -x -f start

@@ -50,6 +50,7 @@ COPY ./s6-rc.d/user/contents.d/sshd-pipeline /etc/s6-overlay/s6-rc.d/user/conten
 COPY ./s6-rc.d/fail2ban /etc/s6-overlay/s6-rc.d/fail2ban
 RUN chmod +x /etc/s6-overlay/s6-rc.d/fail2ban/run
 COPY ./configs/fail2ban-jail.d-sshd.conf /etc/fail2ban/jail.d/sshd.conf
+COPY ./configs/fail2ban.local /etc/fail2ban/fail2ban.local
 COPY ./s6-rc.d/user/contents.d/fail2ban /etc/s6-overlay/s6-rc.d/user/contents.d/fail2ban
 
 # set root password to empty
