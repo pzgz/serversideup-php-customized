@@ -1,5 +1,17 @@
 # Server Side Up PHP Docker Image - Customized with SSH
 
+## Overview about changes made from the original `serversideup-php` image
+
+* Switched to use `root` as default user for container, it means when container startup, the services will be ran by `root` user. But `www-data` will still be used to serve PHP and nginx
+* Enabled `sshd` on port `10022`, so that it can be served by CI/CD tool, such as `deployer`
+* `sshd` will generate log in `/var/log/sshd/current`
+* Installed `fail2ban`, and it will use the sshd log file for jail processing, invalid user login and wrong password login will be banned, forever
+* Disabled password login for every user, only login with key is supported
+* Removed password for root
+* only users in group `wheel` can use `su` for switching to root user, and make sure `www-data` is not in `wheel` group
+
+# Readme from original image
+
 A customized Docker image based on [Server Side Up's PHP Docker Images](https://serversideup.net/open-source/docker-php/) that includes SSH server functionality for development and debugging purposes.
 
 ## Overview

@@ -63,4 +63,7 @@ RUN echo "" >> /usr/local/etc/php-fpm.d/docker-php-serversideup-pool.conf && \
     echo "user = www-data" >> /usr/local/etc/php-fpm.d/docker-php-serversideup-pool.conf && \
     echo "group = www-data" >> /usr/local/etc/php-fpm.d/docker-php-serversideup-pool.conf
 
+# Enable su for wheel group only
+RUN sed -i '/pam_wheel.so/s/^# //' /etc/pam.d/su
+
 # USER www-data
