@@ -18,6 +18,10 @@ RUN mkdir -p /etc/apt/keyrings \
         git \
         openssh-client \
         nodejs \
+        imagemagick \
+        ghostscript \
+        libgd-dev \
+        ffmpeg \
     && ssh-keygen -A \
     && chmod 600 /etc/ssh/ssh_host_*_key \
     && chmod 644 /etc/ssh/ssh_host_*_key.pub \
