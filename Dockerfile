@@ -66,6 +66,7 @@ RUN echo "" >> /usr/local/etc/php-fpm.d/docker-php-serversideup-pool.conf && \
 # Enable su for wheel group only
 RUN sed -i '/pam_wheel.so/s/^# //' /etc/pam.d/su
 
-RUN install-php-extensions bcmath gd intl exif redis imagick
+RUN install-php-extensions bcmath gd intl exif redis imagick excimer
 
 # USER www-data
+RUN chown -R root:root /run
