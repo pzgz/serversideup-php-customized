@@ -23,7 +23,8 @@ RUN mkdir -p /etc/apt/keyrings \
         libgd-dev \
         ffmpeg \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -f /etc/ssh/ssh_host_*
 
 # PNPM support
 # https://github.com/nodejs/corepack/issues/612
