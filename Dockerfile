@@ -22,13 +22,8 @@ RUN mkdir -p /etc/apt/keyrings \
         ghostscript \
         libgd-dev \
         ffmpeg \
-    && ssh-keygen -A \
-    && chmod 600 /etc/ssh/ssh_host_*_key \
-    && chmod 644 /etc/ssh/ssh_host_*_key.pub \
-    && chown root:root /etc/ssh/ssh_host_*_key \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-# && echo "root:Docker!" | chpasswd \
 
 # PNPM support
 # https://github.com/nodejs/corepack/issues/612
