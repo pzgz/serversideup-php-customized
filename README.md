@@ -16,11 +16,11 @@ A customized Docker image based on [Server Side Up's PHP Docker Images](https://
 
 ## Overview
 
-This project extends the `serversideup/php:8.4-fpm-nginx` base image by adding an SSH server, making it easier to access and debug containerized PHP applications during development.
+This project extends the `serversideup/php:8.5-fpm-nginx` base image by adding an SSH server, making it easier to access and debug containerized PHP applications during development.
 
 ## Features
 
-- **PHP 8.4** with FPM and Nginx
+- **PHP 8.5** with FPM and Nginx
 - **SSH Server** with root access enabled
 - **S6 Overlay** service management for SSH
 - **Secure SSH Configuration** with customizable settings
@@ -29,7 +29,7 @@ This project extends the `serversideup/php:8.4-fpm-nginx` base image by adding a
 ## What's Included
 
 ### Base Image Features
-- PHP 8.4 with FPM
+- PHP 8.5 with FPM
 - Nginx web server
 - Optimized for production and development use
 - S6 overlay for service management
